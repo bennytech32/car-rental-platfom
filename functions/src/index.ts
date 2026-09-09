@@ -11,7 +11,7 @@ const SOCIAL_MEDIA_WORDS = /(whatsapp|instagram|ig|facebook|fb|telegram|twitter|
 
 export const chatMasker = functions.firestore
     .document('messages/{messageId}')
-    .onCreate(async (snap, context) => {
+    .onCreate(async (snap: functions.firestore.QueryDocumentSnapshot, context: functions.EventContext) => {
         const messageData = snap.data();
         let originalText = messageData.text;
 
