@@ -6,7 +6,6 @@ import {
     ChevronLeft,
     MapPin,
     Calendar,
-    Clock,
     User,
     CreditCard,
     CheckCircle,
@@ -29,6 +28,7 @@ export default function CheckoutPage() {
     const [currentStep, setCurrentStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [bookingComplete, setBookingComplete] = useState(false);
+    const [bookingRef, setBookingRef] = useState('BT-84920');
 
     const [formData, setFormData] = useState({
         serviceType: 'self_drive',
@@ -86,6 +86,7 @@ export default function CheckoutPage() {
 
         setTimeout(() => {
             setIsSubmitting(false);
+            setBookingRef(`BT-${Math.floor(10000 + Math.random() * 90000)}`);
             setBookingComplete(true);
         }, 2000);
     };
@@ -117,7 +118,7 @@ export default function CheckoutPage() {
                     </div>
                     <h2 className="text-2xl font-black text-slate-900 mb-2">Booking Confirmed!</h2>
                     <p className="text-slate-500 mb-8">
-                        Your booking reference is <strong className="text-slate-900">#BT-{Math.floor(Math.random() * 100000)}</strong>.
+                        Your booking reference is <strong className="text-slate-900">#{bookingRef}</strong>.
                         We have sent the 50% payment instructions and policy guidelines to your email.
                     </p>
                     <Link
@@ -362,7 +363,7 @@ export default function CheckoutPage() {
                                                 {/* Local Documents */}
                                                 {formData.nationality === 'local' && (
                                                     <div className="space-y-2">
-                                                        <label className="text-xs font-bold uppercase text-slate-500">Upload Valid Driver's License</label>
+                                                        <label className="text-xs font-bold uppercase text-slate-500">Upload Valid Driver&apos;s License</label>
                                                         <label className="flex flex-col items-center justify-center w-full h-28 border-2 border-slate-300 border-dashed rounded-xl cursor-pointer bg-slate-50 hover:bg-slate-100 transition-colors">
                                                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                                                 {formData.localLicenseFile ? <FileText className="w-8 h-8 text-green-500 mb-2" /> : <UploadCloud className="w-8 h-8 text-slate-400 mb-2" />}
@@ -482,7 +483,7 @@ export default function CheckoutPage() {
                                                         I agree to the Terms and Conditions
                                                     </p>
                                                     <p className="text-slate-500 text-xs leading-relaxed">
-                                                        I acknowledge that I have read and agree to B-Tech Car Rental's <a href="/terms" className="text-red-600 hover:underline">Terms of Service</a>, <a href="/policy" className="text-red-600 hover:underline">Cancellation Policy</a>, and verify that the documents provided are legally valid.
+                                                        I acknowledge that I have read and agree to B-Tech Car Rental&apos;s <a href="/terms" className="text-red-600 hover:underline">Terms of Service</a>, <a href="/policy" className="text-red-600 hover:underline">Cancellation Policy</a>, and verify that the documents provided are legally valid.
                                                     </p>
                                                 </div>
                                             </label>

@@ -15,6 +15,7 @@ import {
     X,
     Eye
 } from 'lucide-react';
+import { useCurrency } from '@/context/CurrencyContext';
 
 const ALL_FLEET = [
     {
@@ -137,15 +138,56 @@ const ALL_FLEET = [
         seats: "7 Seats",
         rating: 4.9,
         available: true
+    },
+    {
+        id: 7,
+        name: "Range Rover Sport HSE",
+        category: "Luxury / Weddings",
+        vendor: "Apex Luxury Rentals",
+        price: "TZS 520,000",
+        priceValue: 520000,
+        period: "per day",
+        image: "https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?auto=format&fit=crop&w=800&q=80",
+        images: [
+            "https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=800&q=80"
+        ],
+        desc: "Commanding British luxury and performance. Air suspension, panoramic roof, and dynamic off-road modes for VIP and executive transfers.",
+        transmission: "Automatic",
+        fuel: "Petrol",
+        seats: "5 Seats",
+        rating: 5.0,
+        available: true
+    },
+    {
+        id: 8,
+        name: "Hyundai Ioniq 5 EV",
+        category: "City Hatchback",
+        vendor: "GreenDrive East Africa",
+        price: "TZS 220,000",
+        priceValue: 220000,
+        period: "per day",
+        image: "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80",
+        images: [
+            "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1550355191-aa06cb11e81c?auto=format&fit=crop&w=800&q=80"
+        ],
+        desc: "Cutting-edge 100% electric vehicle. Silent, zero emissions, and ultra-fast charging capability. Perfect for modern sustainable city transport.",
+        transmission: "Automatic",
+        fuel: "Electric",
+        seats: "5 Seats",
+        rating: 4.8,
+        available: true
     }
 ];
 
 export default function FleetPage() {
+    const { formatPrice } = useCurrency();
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
 
     // Modal State
-    const [selectedCar, setSelectedCar] = useState<any>(null);
+    const [selectedCar, setSelectedCar] = useState<(typeof ALL_FLEET)[0] | null>(null);
     const [activeCarImage, setActiveCarImage] = useState(0);
 
     const categories = ['All', 'SUV / 4x4 Safari', 'City Hatchback', 'Luxury / Weddings', 'Luxury / Family'];
@@ -275,7 +317,7 @@ export default function FleetPage() {
 
                                 <div className="flex items-center justify-between mt-auto">
                                     <div>
-                                        <span className="text-lg font-black text-slate-900">{car.price}</span>
+                                        <span className="text-lg font-black text-slate-900">{formatPrice(car.priceValue)}</span>
                                         <span className="text-[10px] text-slate-500 block uppercase font-bold">/{car.period}</span>
                                     </div>
                                     <Link
@@ -389,7 +431,7 @@ export default function FleetPage() {
                             {/* Price & Action Button */}
                             <div className="mt-auto pt-6 border-t border-slate-100 flex items-center justify-between">
                                 <div>
-                                    <span className="text-2xl font-black text-slate-900">{selectedCar.price}</span>
+                                    <span className="text-2xl font-black text-slate-900">{formatPrice(selectedCar.priceValue)}</span>
                                     <span className="text-xs text-slate-500 block uppercase font-bold">/{selectedCar.period}</span>
                                 </div>
                                 <Link

@@ -13,12 +13,12 @@ export const chatMasker = functions.firestore
     .document('messages/{messageId}')
     .onCreate(async (snap: functions.firestore.QueryDocumentSnapshot, context: functions.EventContext) => {
         const messageData = snap.data();
-        let originalText = messageData.text;
+        const originalText = messageData.text;
 
         if (!originalText) return null;
 
         // Ficha Namba za Simu, Links, na Maneno ya Social Media
-        let maskedText = originalText
+        const maskedText = originalText
             .replace(PHONE_REGEX, '*******')
             .replace(URL_REGEX, '[LINK REMOVED]')
             .replace(SOCIAL_MEDIA_WORDS, '*******');

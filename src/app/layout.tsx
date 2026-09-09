@@ -1,9 +1,10 @@
 // src/app/layout.tsx
 import './globals.css';
+import { CurrencyProvider } from '@/context/CurrencyContext';
 
 export const metadata = {
-    title: 'B-Tech Car Rental | Dar es Salaam',
-    description: 'Smart car rental platform for local and international travelers',
+    title: 'B-Tech Car Rental | International & Multi-Vendor Mobility',
+    description: 'Premier car rental platform connecting international travelers and verified local fleet vendors with seamless 50/50 escrow booking.',
 };
 
 export default function RootLayout({
@@ -14,7 +15,9 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className="min-h-full flex flex-col" suppressHydrationWarning>
-                {children}
+                <CurrencyProvider>
+                    {children}
+                </CurrencyProvider>
             </body>
         </html>
     );
