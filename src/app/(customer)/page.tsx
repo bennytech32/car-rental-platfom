@@ -30,7 +30,9 @@ import {
     ChevronRight,
     Building2,
     Zap,
-    BadgePercent
+    BadgePercent,
+    User,
+    Eye
 } from 'lucide-react';
 import { useCurrency } from '@/context/CurrencyContext';
 
@@ -42,41 +44,77 @@ export default function CustomerLandingPage() {
     const [activeHeroSlide, setActiveHeroSlide] = useState(0);
     const [selectedCategory, setSelectedCategory] = useState('All');
 
+    // MAREKEBISHO: Imewekwa kuwa empty strings ('') ili iwe plain kama ulivyoomba
     const [searchData, setSearchData] = useState({
-        location: 'JNIA Airport, Dar es Salaam',
-        carType: 'All Categories',
+        location: '',
+        carType: '',
         pickupDate: '',
         returnDate: ''
     });
 
     const heroSlides = [
         {
-            image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80',
-            titleEn: 'International Mobility & Multi-Vendor Fleet Platform',
-            titleSw: 'Jukwaa la Kimataifa la Magari ya Wamiliki Mbalimbali',
-            descEn: 'Connect with verified fleet hosts across Tanzania. Experience seamless airport delivery, multi-currency payments, and 50/50 escrow protection.',
-            descSw: 'Ungana na wamiliki wa magari waliothibitishwa nchini kote. Pokea gari lako uwanja wa ndege, lipa kwa USD au TZS, na ufurahie ulinzi wa 50/50.'
+            image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1920&q=80',
+            titleEn: 'Wedding & Sendoff',
+            titleSw: 'Harusi na Sendoff',
+            descEn: 'Make your special day perfect with our luxury cars for weddings and sendoff events.',
+            descSw: 'Fanya siku yako iwe maalum kwa kutumia magari yetu ya kifahari kwa harusi na sendoff.'
+        },
+        {
+            image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1920&q=80',
+            titleEn: 'Airport Transfer',
+            titleSw: 'Usafiri wa Uwanja wa Ndege',
+            descEn: 'Reliable and on-time pickup and drop-off at the airport for a stress-free journey.',
+            descSw: 'Usafiri wa uhakika na kwa wakati kufika au kutoka uwanja wa ndege bila stress.'
         },
         {
             image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1920&q=80',
-            titleEn: 'Executive Chauffeur & Diplomatic VIP Protocol',
-            titleSw: 'Usafiri wa Hadhi ya Juu wa Kidiplomasia na Wakurugenzi',
-            descEn: 'Vetted bilingual chauffeurs and discreet luxury transportation for corporate summits, executives, and international delegates.',
-            descSw: 'Madereva wataalamu wanaozungumza lugha nyingi kwa ajili ya mikutano ya kimataifa, viongozi na wageni wa heshima.'
+            titleEn: 'Corporate Chauffeur & Self Drive',
+            titleSw: 'Usafiri wa Makampuni na Kujiendesha',
+            descEn: 'Professional drivers for business meetings, or drive yourself in our premium cars.',
+            descSw: 'Madereva wa kitaalamu kwa mikutano ya kibiashara, au jiendeshe mwenyewe kwenye magari yetu.'
+        },
+        {
+            image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1920&q=80',
+            titleEn: 'Family Trip Chauffeur & Self Drive',
+            titleSw: 'Usafiri wa Familia na Kujiendesha',
+            descEn: 'Spacious and safe vehicles for your family vacations, with or without a driver.',
+            descSw: 'Magari makubwa na salama kwa safari za familia yako, ukiwa na dereva au kujiendesha.'
+        },
+        {
+            image: 'https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1920&q=80',
+            titleEn: 'Photoshoot & Video Shoot',
+            titleSw: 'Upigaji Picha na Video',
+            descEn: 'Rent stylish and unique cars to make your music videos and photoshoots stand out.',
+            descSw: 'Kodi magari ya kisasa na ya kipekee ili kunogesha video zako za muziki na picha.'
+        },
+        {
+            image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1920&q=80',
+            titleEn: 'Special Appearance',
+            titleSw: 'Matukio Maalum (Special Appearance)',
+            descEn: 'Arrive in style at VIP events, red carpets, and special parties.',
+            descSw: 'Fika kwa hadhi ya juu kwenye matukio ya VIP, red carpet, na sherehe maalum.'
         },
         {
             image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1920&q=80',
-            titleEn: 'Expedition-Ready 4x4 Safari Fleet',
-            titleSw: 'Magari Magumu ya 4x4 kwa Ajili ya Safari na Utalii',
-            descEn: 'Reinforced 4x4 vehicles built for Serengeti expeditions, Ngorongoro trails, and remote technical project sites.',
-            descSw: 'Magari magumu ya 4x4 yaliyoundwa mahususi kwa safari za Serengeti, Ngorongoro na miradi ya mikoani.'
+            titleEn: 'Safaris & Tour Drive',
+            titleSw: 'Safari za Mbugani na Utalii',
+            descEn: 'Strong 4x4 vehicles ready for wildlife safaris and national park tours.',
+            descSw: 'Magari imara ya 4x4 yaliyo tayari kwa safari za mbuga za wanyama na utalii.'
         },
         {
-            image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80',
-            titleEn: 'Enterprise & Long-Term Fleet Leasing',
-            titleSw: 'Mikataba ya Magari ya Mashirika na Makampuni',
-            descEn: 'Turnkey fleet management with replacement vehicle guarantees for multinational NGOs, embassies, and engineering firms.',
-            descSw: 'Usimamizi kamili wa magari ya makampuni na NGOs yenye uhakika wa kubadilishiwa gari mara moja bila usumbufu.'
+            image: 'https://images.unsplash.com/photo-1464036387756-3240212e3f5d?auto=format&fit=crop&w=1920&q=80',
+            titleEn: 'Upcountry Trips',
+            titleSw: 'Safari za Mikoani',
+            descEn: 'Comfortable and well-maintained cars for long-distance travel across regions.',
+            descSw: 'Magari imara na yenye faraja kwa ajili ya safari ndefu za kwenda mikoani.'
+        },
+        {
+            image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80',
+            titleEn: 'Other Custom Services',
+            titleSw: 'Huduma Nyinginezo',
+            descEn: 'We offer flexible car rental solutions for any other transport needs you may have.',
+            descSw: 'Tunatoa huduma zinazobadilika kulingana na mahitaji yako mengine yoyote ya usafiri.'
         }
     ];
 
@@ -87,7 +125,6 @@ export default function CustomerLandingPage() {
         return () => clearInterval(timer);
     }, [heroSlides.length]);
 
-    // 8 Vehicles (2 full rows of 4) representing a true multi-vendor platform
     const fleetData = [
         {
             id: 1,
@@ -202,9 +239,6 @@ export default function CustomerLandingPage() {
 
     const t = {
         en: {
-            hours: "24/7 International Concierge Support",
-            locationName: "Dar es Salaam • Zanzibar • Arusha",
-            quickSupport: "Priority Desk:",
             navHome: "Home",
             navFleet: "Fleet Catalog",
             navSolutions: "Mobility Solutions",
@@ -214,17 +248,24 @@ export default function CustomerLandingPage() {
             authBtn: "Sign In",
             hostCta: "Become a Host",
             badge: "International Multi-Vendor Mobility",
+            globalSearch: "Search vehicles or locations...",
 
             findCarTitle: "Reserve Your Vehicle",
-            pickupLocation: "Pick-up Location / Airport",
+            pickupLocation: "Select Pick-up Location",
             carTypeLabel: "Vehicle Class",
             pickupDateLabel: "Pick-up Date",
             searchBtn: "Search Fleet",
-            locAirport: "JNIA Airport (DAR) - VIP Meet & Greet",
-            locZanzibar: "Zanzibar Airport (ZNZ) / Stone Town",
-            locArusha: "Kilimanjaro Airport (JRO) / Arusha",
-            locCity: "Dar es Salaam Central Business District",
-            locOysterbay: "Oysterbay / Masaki Diplomatic Zone",
+
+            selectLocation: "-- Select Pick-up Location --",
+            selectCarType: "-- Select Vehicle Class --",
+
+            // MAREKEBISHO: Maeneo uliyoomba
+            locDar: "Dar es Salaam",
+            locZanzibar: "Zanzibar",
+            locArusha: "Arusha",
+            locMwanza: "Mwanza",
+            locMbeya: "Mbeya",
+
             catAll: "All Vehicle Categories",
             catSuv: "SUV & 4x4 Safari Expeditions",
             catSedan: "Executive & Diplomatic Sedans",
@@ -240,7 +281,7 @@ export default function CustomerLandingPage() {
 
             aboutHeading: "About B-Tech Global Car Rental",
             aboutSubheading: "Connecting international travelers with certified local fleet hosts across Tanzania.",
-            aboutText1: "With premier operational hubs at JNIA Airport, Zanzibar, and Arusha, B-Tech delivers unmatched mobility. Whether you are arriving for business summits, Serengeti expeditions, or private VIP travel, our multi-vendor platform ensures inspected quality and transparent pricing.",
+            aboutText1: "With premier operational hubs across major cities, B-Tech delivers unmatched mobility. Whether you are arriving for business summits, Serengeti expeditions, or private VIP travel, our multi-vendor platform ensures inspected quality and transparent pricing.",
             aboutText2: "Our hallmark 50/50 escrow protection model guarantees mutual trust: your deposit is held securely until you receive and verify your vehicle. Experience the freedom of the road with certified hosts and 24/7 bilingual support.",
 
             solutionsHeading: "Enterprise & Bespoke Mobility Solutions",
@@ -288,9 +329,6 @@ export default function CustomerLandingPage() {
             copyright: "© 2026 B-Tech Car Rental International. All rights reserved."
         },
         sw: {
-            hours: "Huduma kwa Wateja wa Kimataifa Masaa 24/7",
-            locationName: "Dar es Salaam • Zanzibar • Arusha",
-            quickSupport: "Dawati la Dharura:",
             navHome: "Nyumbani",
             navFleet: "Magari Yote",
             navSolutions: "Suluhisho za Usafiri",
@@ -298,19 +336,26 @@ export default function CustomerLandingPage() {
             navContact: "Mawasiliano",
             myTrips: "Safari Zangu",
             authBtn: "Ingia",
-            hostCta: "Kuwa Mmiliki (Host)",
+            hostCta: "Kuwa Mmiliki",
             badge: "Mfumo wa Kimataifa wa Wamiliki wa Magari",
+            globalSearch: "Tafuta magari au maeneo...",
 
             findCarTitle: "Weka Nafasi ya Gari Lako",
-            pickupLocation: "Eneo la Kuchukulia / Uwanja wa Ndege",
+            pickupLocation: "Eneo la Kuchukulia Gari",
             carTypeLabel: "Aina ya Gari",
             pickupDateLabel: "Tarehe ya Kuanza Safari",
             searchBtn: "Tafuta Magari",
-            locAirport: "Uwanja wa Ndege wa JNIA (DAR) - Mapokezi ya VIP",
-            locZanzibar: "Uwanja wa Ndege wa Zanzibar (ZNZ) / Mjini",
-            locArusha: "Uwanja wa Ndege wa KIA (JRO) / Arusha",
-            locCity: "Katikati ya Jiji la Dar es Salaam (Posta/Kariakoo)",
-            locOysterbay: "Oysterbay / Masaki Eneo la Kidiplomasia",
+
+            selectLocation: "-- Chagua Eneo la Kuchukulia --",
+            selectCarType: "-- Chagua Aina ya Gari --",
+
+            // MAREKEBISHO: Maeneo uliyoomba
+            locDar: "Dar es Salaam",
+            locZanzibar: "Zanzibar",
+            locArusha: "Arusha",
+            locMwanza: "Mwanza",
+            locMbeya: "Mbeya",
+
             catAll: "Makatagori Yote ya Magari",
             catSuv: "SUV na Magari Magumu ya 4x4 ya Safari",
             catSedan: "Magari ya Kifahari na Kidiplomasia",
@@ -326,7 +371,7 @@ export default function CustomerLandingPage() {
 
             aboutHeading: "Kuhusu B-Tech Global Car Rental",
             aboutSubheading: "Kuunganisha wasafiri wa kimataifa na wamiliki wa magari walioidhinishwa Tanzania kote.",
-            aboutText1: "Tukiwa na vituo vikuu Uwanja wa Ndege wa JNIA (Dar), Zanzibar na Arusha, B-Tech inatoa usafiri wa viwango vya kimataifa. Iwe unasafiri kwa ajili ya mikutano ya kibiashara, safari za Serengeti au ziara za kikazi, mtandao wetu wa wamiliki unakuhakikishia magari salama na bei za wazi.",
+            aboutText1: "Tukiwa na vituo vikuu katika majiji makubwa, B-Tech inatoa usafiri wa viwango vya kimataifa. Iwe unasafiri kwa ajili ya mikutano ya kibiashara, safari za Serengeti au ziara za kikazi, mtandao wetu wa wamiliki unakuhakikishia magari salama na bei za wazi.",
             aboutText2: "Mfumo wetu wa kipekee wa malipo wa nusu kwa nusu (50/50) kwenye Escrow unaleta ulinzi kamili: fedha zako zinashikiliwa salama hadi ukabidhiwe gari na kuridhika. Safiri kwa amani ukiwa na msaada wa masaa 24/7.",
 
             solutionsHeading: "Suluhisho la Usafiri wa Kiwango cha Kimataifa",
@@ -364,7 +409,7 @@ export default function CustomerLandingPage() {
             ctaHeading: "Boresha safari yako leo ndani ya Tanzania.",
             ctaDesc: "Ungana na maelfu ya wasafiri wa kimataifa na mashirika makubwa yanayoamini B-Tech kwa usafiri wa uhakika.",
             ctaBtn: "Tazama Orodha Kamili",
-            ctaPartnerBtn: "Jisajili Kama Mmiliki wa Magari",
+            ctaPartnerBtn: "Jisajili Kama Mmiliki",
             footerDesc: "Mtandao wa kimataifa wa kukodisha magari unaounganisha wasafiri na wamiliki wa magari kwa malipo salama ya 50/50 nchini Tanzania.",
             quickLinks: "Viungo Muhimu",
             legal: "Kisheria na Usalama",
@@ -375,126 +420,112 @@ export default function CustomerLandingPage() {
         }
     };
 
+    // MAREKEBISHO: Iki-submit, inapeleka machaguo yote kwenda kwenye ukurasa wa /fleet kwa ajili ya kumalizia booking
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        router.push(`/fleet?location=${encodeURIComponent(searchData.location)}`);
+        router.push(`/fleet?location=${encodeURIComponent(searchData.location)}&type=${encodeURIComponent(searchData.carType)}`);
     };
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-red-600 selection:text-white">
 
-            {/* Top Announcement & Multi-Currency Bar */}
-            <div className="bg-slate-950 text-slate-300 text-xs py-2.5 px-4 border-b border-slate-800 transition-all duration-300">
-                <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
-                    <div className="flex items-center gap-6">
-                        <div className="flex items-center gap-2">
-                            <Clock className="w-3.5 h-3.5 text-red-500" />
-                            <span>{t[lang].hours}</span>
-                        </div>
-                        <div className="hidden md:flex items-center gap-2 text-slate-400">
-                            <MapPin className="w-3.5 h-3.5 text-red-500" />
-                            <span>{t[lang].locationName}</span>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                        {/* International Currency Switcher */}
-                        <div className="flex items-center bg-slate-900 rounded-lg p-0.5 border border-slate-800">
-                            <button
-                                onClick={() => setCurrency('TZS')}
-                                className={`px-2 py-0.5 rounded text-[11px] font-extrabold transition-all ${
-                                    currency === 'TZS' ? 'bg-red-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
-                                }`}
-                            >
-                                TZS
-                            </button>
-                            <button
-                                onClick={() => setCurrency('USD')}
-                                className={`px-2 py-0.5 rounded text-[11px] font-extrabold transition-all ${
-                                    currency === 'USD' ? 'bg-red-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
-                                }`}
-                            >
-                                USD ($)
-                            </button>
-                        </div>
-
-                        {/* Language Switcher */}
-                        <button
-                            onClick={() => setLang(lang === 'en' ? 'sw' : 'en')}
-                            className="bg-slate-900 hover:bg-slate-800 text-slate-200 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-slate-800 transition-all"
-                        >
-                            <Globe className="w-3.5 h-3.5 text-red-400" />
-                            <span>{lang === 'en' ? 'SW' : 'EN'}</span>
-                        </button>
-
-                        {/* Partner Link */}
-                        <Link
-                            href="/register?role=vendor"
-                            className="hidden lg:flex items-center gap-1 text-[11px] font-bold text-red-400 hover:text-red-300 transition-colors"
-                        >
-                            <Building2 className="w-3.5 h-3.5" />
-                            <span>{t[lang].hostCta}</span>
-                        </Link>
-                    </div>
-                </div>
-            </div>
-
-            {/* Main Navigation Header */}
             <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200">
-                <div className="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
-                    <Link href="/" className="flex items-center gap-2.5 group">
-                        <div className="bg-red-600 text-white p-2 rounded-xl font-black text-xl tracking-wider transition-transform duration-300 group-hover:-rotate-2 shadow-sm">
-                            BT
-                        </div>
-                        <div>
-                            <span className="text-xl font-black tracking-tight text-slate-950">B-TECH</span>
-                            <span className="text-[10px] block text-red-600 font-extrabold uppercase tracking-widest">
-                                Global Car Rental
-                            </span>
-                        </div>
-                    </Link>
-
-                    <nav className="hidden lg:flex items-center gap-7 font-bold text-xs uppercase tracking-wider text-slate-600">
-                        <Link href="/" className="text-red-600 hover:text-red-600 transition-colors">{t[lang].navHome}</Link>
-                        <Link href="/fleet" className="hover:text-red-600 transition-colors">{t[lang].navFleet}</Link>
-                        <Link href="#solutions" className="hover:text-red-600 transition-colors">{t[lang].navSolutions}</Link>
-                        <Link href="#about" className="hover:text-red-600 transition-colors">{t[lang].navAbout}</Link>
-                        <Link href="#contact" className="hover:text-red-600 transition-colors">{t[lang].navContact}</Link>
-                    </nav>
-
-                    <div className="hidden md:flex items-center gap-4">
-                        <Link
-                            href="/register?role=vendor"
-                            className="text-xs font-bold text-slate-700 hover:text-red-600 transition-colors border border-slate-200 hover:border-red-400 px-3.5 py-2 rounded-xl"
-                        >
-                            {t[lang].hostCta}
+                <div className="max-w-7xl mx-auto px-4 py-3">
+                    <div className="flex justify-between items-center gap-4">
+                        <Link href="/" className="flex items-center gap-2.5 group shrink-0">
+                            <div className="bg-red-600 text-white p-2 rounded-xl font-black text-xl tracking-wider transition-transform duration-300 group-hover:-rotate-2 shadow-sm">
+                                BT
+                            </div>
+                            <div className="hidden sm:block">
+                                <span className="text-xl font-black tracking-tight text-slate-950">B-TECH</span>
+                                <span className="text-[10px] block text-red-600 font-extrabold uppercase tracking-widest">
+                                    Global Car Rental
+                                </span>
+                            </div>
                         </Link>
-                        <Link
-                            href="/login"
-                            className="bg-slate-950 text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-red-600 transition-all shadow-md flex items-center gap-1.5"
-                        >
-                            <UserCheck className="w-3.5 h-3.5" />
-                            <span>{t[lang].authBtn}</span>
-                        </Link>
+
+                        <div className="hidden md:flex flex-1 max-w-lg mx-4">
+                            <div className="relative w-full">
+                                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                <input
+                                    type="text"
+                                    placeholder={t[lang].globalSearch}
+                                    className="w-full bg-slate-100/80 border border-transparent hover:border-slate-200 rounded-full py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+                            <div className="hidden lg:flex items-center gap-1.5 border-r border-slate-200 pr-4">
+                                <button
+                                    onClick={() => setCurrency(currency === 'TZS' ? 'USD' : 'TZS')}
+                                    className="text-[11px] font-extrabold bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors"
+                                >
+                                    {currency}
+                                </button>
+                                <button
+                                    onClick={() => setLang(lang === 'en' ? 'sw' : 'en')}
+                                    className="text-[11px] font-extrabold bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors flex items-center gap-1"
+                                >
+                                    <Globe className="w-3.5 h-3.5" />
+                                    <span>{lang.toUpperCase()}</span>
+                                </button>
+                            </div>
+
+                            <Link
+                                href="/register?role=vendor"
+                                className="hidden lg:flex items-center gap-1 text-xs font-bold text-slate-600 hover:text-red-600 transition-colors"
+                            >
+                                <Building2 className="w-4 h-4" />
+                                <span>{t[lang].hostCta}</span>
+                            </Link>
+
+                            <Link
+                                href="/login"
+                                className="p-2 text-slate-700 hover:bg-red-50 hover:text-red-600 rounded-full transition-colors flex items-center justify-center"
+                                aria-label="User Profile"
+                            >
+                                <User className="w-6 h-6" />
+                            </Link>
+
+                            <button
+                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                className="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-full transition-colors"
+                                aria-label="Toggle Menu"
+                            >
+                                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                            </button>
+                        </div>
                     </div>
 
-                    <button
-                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="lg:hidden text-slate-700 p-2"
-                        aria-label="Toggle Navigation Menu"
-                    >
-                        {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                    </button>
+                    <div className="md:hidden mt-3 w-full">
+                        <div className="relative w-full">
+                            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                            <input
+                                type="text"
+                                placeholder={t[lang].globalSearch}
+                                className="w-full bg-slate-100/80 border border-transparent rounded-full py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
+                            />
+                        </div>
+                    </div>
                 </div>
 
-                {/* Mobile Dropdown Menu */}
                 {mobileMenuOpen && (
-                    <div className="lg:hidden bg-white border-t border-slate-100 px-5 py-4 space-y-3 font-semibold text-sm">
-                        <Link href="/" className="block text-red-600 py-1.5">{t[lang].navHome}</Link>
-                        <Link href="/fleet" className="block text-slate-700 py-1.5">{t[lang].navFleet}</Link>
-                        <Link href="#solutions" className="block text-slate-700 py-1.5">{t[lang].navSolutions}</Link>
-                        <Link href="#about" className="block text-slate-700 py-1.5">{t[lang].navAbout}</Link>
-                        <Link href="/register?role=vendor" className="block text-red-600 py-1.5">{t[lang].hostCta}</Link>
+                    <div className="lg:hidden bg-white border-t border-slate-100 px-5 py-4 space-y-4 font-semibold text-sm shadow-xl">
+                        <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
+                            <button onClick={() => setCurrency(currency === 'TZS' ? 'USD' : 'TZS')} className="flex-1 bg-slate-100 py-2 rounded-lg text-xs font-bold text-center">
+                                Change Currency: {currency}
+                            </button>
+                            <button onClick={() => setLang(lang === 'en' ? 'sw' : 'en')} className="flex-1 bg-slate-100 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1">
+                                <Globe className="w-3.5 h-3.5" /> Language: {lang.toUpperCase()}
+                            </button>
+                        </div>
+
+                        <Link href="/" className="block text-red-600 py-1">{t[lang].navHome}</Link>
+                        <Link href="/fleet" className="block text-slate-700 py-1">{t[lang].navFleet}</Link>
+                        <Link href="#solutions" className="block text-slate-700 py-1">{t[lang].navSolutions}</Link>
+                        <Link href="#about" className="block text-slate-700 py-1">{t[lang].navAbout}</Link>
+                        <Link href="/register?role=vendor" className="block text-red-600 py-1">{t[lang].hostCta}</Link>
                         <div className="pt-3 border-t border-slate-100 flex gap-2">
                             <Link href="/login" className="w-1/2 text-center bg-slate-950 text-white py-2.5 rounded-xl font-bold text-xs">
                                 {t[lang].authBtn}
@@ -508,8 +539,6 @@ export default function CustomerLandingPage() {
             </header>
 
             <main>
-
-                {/* Hero Section */}
                 <section className="relative bg-slate-950 text-white py-28 lg:py-44 overflow-hidden">
                     {heroSlides.map((slide, index) => (
                         <div
@@ -554,7 +583,6 @@ export default function CustomerLandingPage() {
                             </Link>
                         </div>
 
-                        {/* Slider dots */}
                         <div className="flex justify-center gap-2">
                             {heroSlides.map((_, idx) => (
                                 <button
@@ -568,7 +596,6 @@ export default function CustomerLandingPage() {
                     </div>
                 </section>
 
-                {/* International Booking / Search Bar Widget */}
                 <section className="max-w-7xl mx-auto px-4 -mt-14 relative z-20 mb-16">
                     <div className="bg-white rounded-3xl shadow-2xl border border-slate-200/80 p-5 md:p-8 backdrop-blur-lg">
                         <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
@@ -582,6 +609,8 @@ export default function CustomerLandingPage() {
                         </div>
 
                         <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+                            {/* MAREKEBISHO YA LOCATION DROPDOWN */}
                             <div className="border border-slate-200 rounded-2xl p-3 bg-slate-50/70 hover:bg-white focus-within:bg-white focus-within:border-red-500 transition-colors">
                                 <label className="block text-[10px] font-black uppercase text-slate-500 mb-1">{t[lang].pickupLocation}</label>
                                 <div className="flex items-center gap-2">
@@ -590,12 +619,14 @@ export default function CustomerLandingPage() {
                                         value={searchData.location}
                                         onChange={(e) => setSearchData({ ...searchData, location: e.target.value })}
                                         className="w-full bg-transparent text-xs font-bold text-slate-900 focus:outline-none cursor-pointer"
+                                        required
                                     >
-                                        <option value="JNIA Airport, Dar es Salaam">{t[lang].locAirport}</option>
-                                        <option value="Zanzibar Airport (ZNZ)">{t[lang].locZanzibar}</option>
-                                        <option value="Kilimanjaro Airport (JRO)">{t[lang].locArusha}</option>
-                                        <option value="City Center (Posta / Kariakoo)">{t[lang].locCity}</option>
-                                        <option value="Oysterbay / Masaki">{t[lang].locOysterbay}</option>
+                                        <option value="" disabled>{t[lang].selectLocation}</option>
+                                        <option value="Dar es Salaam">{t[lang].locDar}</option>
+                                        <option value="Zanzibar">{t[lang].locZanzibar}</option>
+                                        <option value="Arusha">{t[lang].locArusha}</option>
+                                        <option value="Mwanza">{t[lang].locMwanza}</option>
+                                        <option value="Mbeya">{t[lang].locMbeya}</option>
                                     </select>
                                 </div>
                             </div>
@@ -608,7 +639,9 @@ export default function CustomerLandingPage() {
                                         value={searchData.carType}
                                         onChange={(e) => setSearchData({ ...searchData, carType: e.target.value })}
                                         className="w-full bg-transparent text-xs font-bold text-slate-900 focus:outline-none cursor-pointer"
+                                        required
                                     >
+                                        <option value="" disabled>{t[lang].selectCarType}</option>
                                         <option value="All Categories">{t[lang].catAll}</option>
                                         <option value="SUV / Land Cruiser">{t[lang].catSuv}</option>
                                         <option value="Sedan / Saloon">{t[lang].catSedan}</option>
@@ -627,6 +660,7 @@ export default function CustomerLandingPage() {
                                         value={searchData.pickupDate}
                                         onChange={(e) => setSearchData({ ...searchData, pickupDate: e.target.value })}
                                         className="w-full bg-transparent text-xs font-bold text-slate-900 focus:outline-none cursor-pointer"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -644,7 +678,6 @@ export default function CustomerLandingPage() {
                     </div>
                 </section>
 
-                {/* Trust Pillar Highlights */}
                 <section className="max-w-7xl mx-auto px-4 mb-20 relative z-10">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="bg-white p-7 rounded-3xl shadow-sm border border-slate-100 flex items-start gap-4 hover:shadow-md transition-shadow">
@@ -679,7 +712,7 @@ export default function CustomerLandingPage() {
                     </div>
                 </section>
 
-                {/* OUR TRUSTED FLEET - EXPANDED TO 8 VEHICLES (2 ROWS OF 4) WITH DYNAMIC CURRENCY */}
+                {/* OUR TRUSTED FLEET - WITH HIDDEN PLATES & GALLERY PREVIEW */}
                 <section id="fleet" className="py-20 px-4 bg-white border-t border-slate-100">
                     <div className="max-w-7xl mx-auto">
                         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-6">
@@ -696,17 +729,15 @@ export default function CustomerLandingPage() {
                                 </p>
                             </div>
 
-                            {/* Category Filter Chips & Currency Indicator */}
                             <div className="flex flex-wrap items-center gap-2">
                                 {['All', 'SUV / 4x4', 'Luxury', 'Economy', 'Electric'].map((cat) => (
                                     <button
                                         key={cat}
                                         onClick={() => setSelectedCategory(cat)}
-                                        className={`text-xs font-bold px-4 py-2 rounded-xl transition-all cursor-pointer ${
-                                            selectedCategory === cat
-                                                ? 'bg-slate-950 text-white shadow-sm'
-                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                                        }`}
+                                        className={`text-xs font-bold px-4 py-2 rounded-xl transition-all cursor-pointer ${selectedCategory === cat
+                                            ? 'bg-slate-950 text-white shadow-sm'
+                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                            }`}
                                     >
                                         {cat}
                                     </button>
@@ -714,20 +745,26 @@ export default function CustomerLandingPage() {
                             </div>
                         </div>
 
-                        {/* 8 Cars Grid (2 Rows x 4 Columns on desktop) */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             {filteredCars.map((car) => (
                                 <div
                                     key={car.id}
-                                    className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-200/90 hover:shadow-2xl hover:border-slate-300 transition-all duration-300 flex flex-col group"
+                                    className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-200/90 hover:shadow-2xl hover:border-slate-300 transition-all duration-300 flex flex-col group relative"
                                 >
-                                    {/* Vehicle Image and Badges */}
-                                    <div className="relative h-52 overflow-hidden bg-slate-100">
+                                    <div className="relative h-52 overflow-hidden bg-slate-100 cursor-pointer" onClick={() => router.push(`/fleet/${car.id}`)}>
                                         <img
                                             src={car.image}
                                             alt={car.name}
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                         />
+
+                                        {/* Hover Overlay kuonesha muonekano wa Ndani na Nje */}
+                                        <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                            <span className="bg-white text-slate-900 text-xs font-extrabold px-4 py-2.5 rounded-full flex items-center gap-2 shadow-lg">
+                                                <Eye className="w-4 h-4 text-red-600" /> View Interior & Exterior
+                                            </span>
+                                        </div>
+
                                         <div className="absolute top-3 left-3 bg-slate-950/85 backdrop-blur-md text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
                                             {car.category}
                                         </div>
@@ -735,11 +772,15 @@ export default function CustomerLandingPage() {
                                             <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                                             <span>{car.rating}</span>
                                         </div>
+
+                                        {/* Beji ya faragha kuficha Plate Namba */}
+                                        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-slate-950/80 backdrop-blur-md text-white text-[9px] font-bold px-3 py-1.5 rounded-md flex items-center gap-1.5 shadow-sm border border-slate-700/50">
+                                            <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                                            <span className="uppercase tracking-widest">Plate Hidden</span>
+                                        </div>
                                     </div>
 
-                                    {/* Card Content */}
                                     <div className="p-5 flex flex-col flex-grow">
-                                        {/* Multi-Vendor Indicator */}
                                         <div className="flex items-center justify-between text-[11px] mb-2">
                                             <div className="flex items-center gap-1 text-slate-600 font-semibold truncate">
                                                 <Building2 className="w-3.5 h-3.5 text-red-600 shrink-0" />
@@ -754,7 +795,6 @@ export default function CustomerLandingPage() {
                                             {car.name}
                                         </h3>
 
-                                        {/* Key Specs */}
                                         <div className="grid grid-cols-3 gap-1.5 py-2.5 border-y border-slate-100 mb-4 text-[11px] font-semibold text-slate-600 text-center bg-slate-50/80 rounded-xl">
                                             <div className="flex flex-col items-center gap-0.5">
                                                 <Settings className="w-3.5 h-3.5 text-slate-400" />
@@ -774,7 +814,6 @@ export default function CustomerLandingPage() {
                                             </div>
                                         </div>
 
-                                        {/* Pricing & Booking CTA */}
                                         <div className="flex items-center justify-between mt-auto pt-2">
                                             <div>
                                                 <span className="text-lg font-black text-slate-950 block leading-none">
@@ -785,7 +824,7 @@ export default function CustomerLandingPage() {
                                                 </span>
                                             </div>
                                             <Link
-                                                href="/checkout"
+                                                href={`/fleet/${car.id}/checkout`}
                                                 className="bg-slate-950 hover:bg-red-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-colors flex items-center gap-1.5 shadow-sm"
                                             >
                                                 <span>{t[lang].bookNow}</span>
@@ -797,7 +836,6 @@ export default function CustomerLandingPage() {
                             ))}
                         </div>
 
-                        {/* View All Fleet Link */}
                         <div className="text-center mt-12">
                             <Link
                                 href="/fleet"
@@ -810,7 +848,6 @@ export default function CustomerLandingPage() {
                     </div>
                 </section>
 
-                {/* BESPOKE MOBILITY SOLUTIONS (REPLACING OLD TACKY "SERVICES" HEADER) */}
                 <section id="solutions" className="relative py-24 px-4 bg-slate-950 text-white overflow-hidden">
                     <div
                         className="absolute inset-0 bg-cover bg-center opacity-15"
@@ -867,7 +904,6 @@ export default function CustomerLandingPage() {
                     </div>
                 </section>
 
-                {/* FRICTIONLESS GLOBAL RESERVATION & ESCROW (REPLACING TACKY "PROCESS" HEADER) */}
                 <section className="py-24 px-4 bg-slate-900 text-white relative overflow-hidden border-t border-slate-800">
                     <div className="max-w-7xl mx-auto relative z-10">
                         <div className="text-center max-w-3xl mx-auto mb-16">
@@ -909,14 +945,13 @@ export default function CustomerLandingPage() {
                     </div>
                 </section>
 
-                {/* About & Trust Metrics Section */}
                 <section id="about" className="py-24 px-4 bg-white border-t border-slate-100">
                     <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
                         <div className="w-full lg:w-1/2 relative">
                             <div className="absolute inset-0 bg-red-600 rounded-3xl translate-x-3 translate-y-3 opacity-10"></div>
                             <img
                                 src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=1000&q=80"
-                                alt="International Fleet in Dar es Salaam"
+                                alt="International Fleet"
                                 className="relative z-10 rounded-3xl shadow-2xl object-cover h-[480px] w-full"
                             />
                         </div>
@@ -947,15 +982,14 @@ export default function CustomerLandingPage() {
                                     <div className="text-[10px] font-extrabold text-red-600 uppercase">Verified Fleets</div>
                                 </div>
                                 <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 text-center">
-                                    <div className="text-3xl font-black text-slate-950 mb-1">3</div>
-                                    <div className="text-[10px] font-extrabold text-red-600 uppercase">Airports Served</div>
+                                    <div className="text-3xl font-black text-slate-950 mb-1">5+</div>
+                                    <div className="text-[10px] font-extrabold text-red-600 uppercase">Regions Served</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* International Call to Action */}
                 <section className="py-20 px-4 bg-slate-50">
                     <div className="max-w-7xl mx-auto bg-slate-950 rounded-[2.5rem] p-10 md:p-16 text-center text-white relative overflow-hidden shadow-2xl border border-slate-800">
                         <div className="absolute top-0 left-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-10"></div>
@@ -987,7 +1021,6 @@ export default function CustomerLandingPage() {
 
             </main>
 
-            {/* International Footer */}
             <footer id="contact" className="bg-slate-950 text-slate-400 pt-20 pb-8 px-4 border-t border-slate-900">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
 
@@ -1037,7 +1070,7 @@ export default function CustomerLandingPage() {
                         <ul className="space-y-3.5 text-xs">
                             <li className="flex items-start gap-3">
                                 <MapPin className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
-                                <span>Dar es Salaam • Zanzibar • Arusha</span>
+                                <span>Dar es Salaam • Zanzibar • Arusha • Mwanza • Mbeya</span>
                             </li>
                             <li className="flex items-start gap-3">
                                 <Phone className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
