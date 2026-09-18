@@ -57,7 +57,7 @@ export default function CustomerLandingPage() {
     // State kwa ajili ya FAQ accordion
     const [activeFaq, setActiveFaq] = useState<number | null>(0);
 
-    // HII NDIO STATE MPYA KWA AJILI YA POP-UP MODAL YAKO
+    // State kwa ajili ya Pop-up Modal
     const [selectedCarForModal, setSelectedCarForModal] = useState<any | null>(null);
 
     // Refs kwa ajili ya kuslide containers
@@ -71,7 +71,8 @@ export default function CustomerLandingPage() {
         returnDate: ''
     });
 
-    const scrollContainer = (ref: React.RefObject<HTMLDivElement>, direction: 'left' | 'right') => {
+    // FIXED TYPE: React.RefObject<HTMLDivElement | null>
+    const scrollContainer = (ref: React.RefObject<HTMLDivElement | null>, direction: 'left' | 'right') => {
         if (ref.current) {
             const scrollAmount = direction === 'left' ? -350 : 350;
             ref.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
@@ -143,13 +144,6 @@ export default function CustomerLandingPage() {
             descSw: 'Tunatoa huduma zinazobadilika kulingana na mahitaji yako mengine yoyote ya usafiri.'
         }
     ];
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setActiveHeroSlide((prev) => (prev + 1) % heroSlides.length);
-        }, 6000);
-        return () => clearInterval(timer);
-    }, [heroSlides.length]);
 
     const fleetData = [
         {
@@ -283,7 +277,7 @@ export default function CustomerLandingPage() {
             ctaBtn: "Explore Entire Fleet", ctaPartnerBtn: "List Your Fleet as a Host", footerDesc: "International multi-vendor car rental network providing secure escrow bookings across Dar es Salaam, Zanzibar, and East Africa.",
             quickLinks: "Platform Links", legal: "Trust & Compliance", terms: "Terms of Service", privacy: "Privacy Policy",
             escrowGuarantee: "Escrow Payment Terms", copyright: "© 2026 B-Tech Car Rental International. All rights reserved.",
-            modalClose: "Close", modalContinue: "Continue to Booking" // NIMEONGEZA HAPA
+            modalClose: "Close", modalContinue: "Continue to Booking"
         },
         sw: {
             navHome: "Nyumbani", navFleet: "Magari Yote", navSolutions: "Suluhisho za Usafiri", navAbout: "Kuhusu Sisi", navContact: "Mawasiliano",
@@ -318,7 +312,7 @@ export default function CustomerLandingPage() {
             ctaBtn: "Tazama Orodha Kamili", ctaPartnerBtn: "Jisajili Kama Mmiliki", footerDesc: "Mtandao wa kimataifa wa kukodisha magari unaounganisha wasafiri na wamiliki wa magari kwa malipo salama nchini Tanzania.",
             quickLinks: "Viungo Muhimu", legal: "Kisheria na Usalama", terms: "Vigezo na Masharti", privacy: "Sera ya Faragha",
             escrowGuarantee: "Masharti ya Malipo ya Escrow", copyright: "© 2026 B-Tech Car Rental International. Haki zote zimehifadhiwa.",
-            modalClose: "Funga", modalContinue: "Endelea na Gari Hili" // NIMEONGEZA HAPA
+            modalClose: "Funga", modalContinue: "Endelea na Gari Hili"
         }
     };
 
@@ -675,7 +669,6 @@ export default function CustomerLandingPage() {
                                         key={car.id}
                                         className="min-w-[85vw] sm:min-w-[340px] snap-start shrink-0 bg-white dark:bg-slate-800/80 rounded-3xl overflow-hidden shadow-sm border border-slate-200/90 dark:border-slate-700/90 hover:shadow-2xl hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 flex flex-col group relative"
                                     >
-                                        {/* HAPA NIMEBADILISHA onClick KUITANGAZA MODAL */}
                                         <div className="relative h-52 overflow-hidden bg-slate-100 dark:bg-slate-700 cursor-pointer" onClick={() => setSelectedCarForModal(car)}>
                                             <img
                                                 src={car.image}
@@ -801,7 +794,6 @@ export default function CustomerLandingPage() {
                                         key={car.id}
                                         className="min-w-[85vw] sm:min-w-[340px] snap-start shrink-0 bg-white dark:bg-slate-800/80 rounded-3xl overflow-hidden shadow-sm border border-slate-200/90 dark:border-slate-700/90 hover:shadow-2xl hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 flex flex-col group relative"
                                     >
-                                        {/* HAPA NIMEBADILISHA onClick KUITANGAZA MODAL */}
                                         <div className="relative h-52 overflow-hidden bg-slate-100 dark:bg-slate-700 cursor-pointer" onClick={() => setSelectedCarForModal(car)}>
                                             <img
                                                 src={car.image}
@@ -1194,7 +1186,7 @@ export default function CustomerLandingPage() {
                 >
                     <div
                         className="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl relative border border-slate-200 dark:border-slate-800"
-                        onClick={e => e.stopPropagation()} // inazuia modal isijifunge ukiclick ndani
+                        onClick={e => e.stopPropagation()}
                     >
                         {/* Kitufe cha Kufunga (Close Button) */}
                         <button
